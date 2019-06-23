@@ -1,0 +1,10 @@
+h1 {
+    color:grey;
+    font-size: 10 em;
+}
+.table {
+    border: 1px solid;
+}
+td{
+    background-color: silver;
+}

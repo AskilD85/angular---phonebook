@@ -1,21 +1,76 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<h1>Справочник</h1>
 
-<router-outlet></router-outlet>
+
+
+    
+<label class="active" for="first_name" placeholder="Фильтр">Поиск по Ф.И.О</label>
+<input  id="first_name"  class="validate" [(ngModel)]="searchStr"><br />
+<input type="button" value="Добавить" class="btn btn-success" (click)="add()" />
+
+
+<table *ngIf="tableMode; else create" class="table table-striped">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Ф.И.О.</td>
+            <td>Номер телефона</td>
+            <td>Комната</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of products | search:searchStr">
+            <ng-template [ngIf]="product?.id != p.id" [ngIfElse]="edit">
+                <td>{{p?.id}}</td>
+                <td>{{p?.Name}}</td>
+                <td>{{p?.phone_id}}</td>
+                <td>{{p?.room_id}}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" (click)="editProduct(p)">Изменить</button>
+                    <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
+                </td>
+            </ng-template>
+        </tr>
+    </tbody>
+</table>
+ 
+<!--шаблон для редактирования-->
+<ng-template #edit>
+    <td>
+        
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="product.Name" class="form-control" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="product.phone_id" class="form-control" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="product.room_id" class="form-control" />
+    </td>
+    
+    <td>
+        <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+    </td>
+</ng-template>
+ 
+<!--шаблон для добавления-->
+<ng-template #create>
+    <div class="form-group">
+        <label>ФИО</label>
+        <input type="text" [(ngModel)]="product.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Телефон</label>
+        <input type="text" [(ngModel)]="product.phone_id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Комната</label>
+        <input type="text" [(ngModel)]="product.room_id" class="form-control" />
+    </div>
+    <div>
+        <input type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </div>
+</ng-template>
